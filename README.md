@@ -2,7 +2,7 @@
 Raptors Games schedule for busy developers - 2019
 -
 
-<img src="raptors-lazy-schedule.png" width="359" />
+<img src="raptors-lazy-schedule.png" width="800" />
 Shows next 5 games for Raptors NBA team only.
 
 Installation:
