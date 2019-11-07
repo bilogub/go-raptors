@@ -58,18 +58,21 @@ func processResponse(body []byte) [][]interface{} {
 	var output [][]interface{}
 	for _, game := range result["sports_content"].Game {
 		startDate, _ := time.Parse("20060102", game.HomeStartDate)
+		var startTime string
 		if time.Now().Before(startDate) {
 			playingWith := ""
 			hommies := ""
 			if game.IsHomeTeam == 1 {
 				playingWith = game.Visitor.Nickname
 				hommies = game.Home.Nickname
+				startTime = game.HomeStartTime
 			} else {
 				playingWith = game.Home.Nickname
 				hommies = game.Visitor.Nickname
+				startTime = game.VisitorStartTime
 			}
 			starts := fmt.Sprintf("%s %s:%s",
-				startDate.Format("Nov 02, 2006"), game.HomeStartTime[0:2], game.HomeStartTime[2:4])
+				startDate.Format("Nov 02, 2006"), startTime[0:2], startTime[2:4])
 			teams := fmt.Sprintf("%s V/S %s", hommies, playingWith)
 			place := fmt.Sprintf("%s, %s, %s, %s", game.Arena, game.City, game.State, game.Country)
 			output = append(output, []interface{}{starts, teams, place})
