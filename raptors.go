@@ -73,7 +73,7 @@ func processResponse(body []byte) [][]interface{} {
 			}
 			starts := fmt.Sprintf("%s %s:%s",
 				startDate.Format("Nov 02, 2006"), startTime[0:2], startTime[2:4])
-			teams := fmt.Sprintf("%s V/S %s", hommies, playingWith)
+			teams := fmt.Sprintf("%s vs %s", hommies, playingWith)
 			place := fmt.Sprintf("%s, %s, %s, %s", game.Arena, game.City, game.State, game.Country)
 			output = append(output, []interface{}{starts, teams, place})
 		}

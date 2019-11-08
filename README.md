@@ -8,6 +8,6 @@ Shows next 5 games for Raptors NBA team only.
 Installation:
 1. Build it with Golang
 2. Move to /url/local/bin
-3. Launch it terminal `raptors`
+3. Launch it in terminal `raptors`
 4. Watch the games
 
