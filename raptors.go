@@ -57,9 +57,10 @@ func processResponse(body []byte) [][]interface{} {
 	json.Unmarshal([]byte(body), &result)
 	var output [][]interface{}
 	for _, game := range result["sports_content"].Game {
-		startDate, _ := time.Parse("20060102", game.HomeStartDate)
+		startDate, _ := time.ParseInLocation("20060102", game.HomeStartDate, time.Local)
 		var startTime string
-		if time.Now().Before(startDate) {
+		now := time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.Local)
+		if now.Before(startDate) || now.Equal(startDate) {
 			playingWith := ""
 			hommies := ""
 			if game.IsHomeTeam == 1 {
