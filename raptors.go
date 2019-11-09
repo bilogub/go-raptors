@@ -71,6 +71,7 @@ func processResponse(body []byte) [][]interface{} {
 			playingWith := ""
 			hommies := ""
 			starts := ""
+			score := ""
 			status := game.Status.GameStatus
 			if game.IsHomeTeam == 1 {
 				playingWith = game.Visitor.Nickname
@@ -89,9 +90,16 @@ func processResponse(body []byte) [][]interface{} {
 			} else {
 				starts = "Final"
 			}
+			if status == "2" || status == "3" {
+				if game.IsHomeTeam == 1 {
+					score = fmt.Sprintf("%s - %s", game.Home.Score, game.Visitor.Score)
+				} else {
+					score = fmt.Sprintf("%s - %s", game.Visitor.Score, game.Home.Score)
+				}
+			}
 			teams := fmt.Sprintf("%s vs %s", hommies, playingWith)
 			place := fmt.Sprintf("%s, %s, %s, %s", game.Arena, game.City, game.State, game.Country)
-			output = append(output, []interface{}{starts, teams, place})
+			output = append(output, []interface{}{starts, teams, score, place})
 		}
 		if len(output) == 5 {
 			break
@@ -120,7 +128,7 @@ func main() {
 
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"DATE", "TEAMS", "PLACE"})
+	t.AppendHeader(table.Row{"DATE", "TEAMS", "", "PLACE"})
 	for _, line := range output {
 		t.AppendRow(line)
 	}
