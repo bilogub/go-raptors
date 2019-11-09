@@ -70,6 +70,8 @@ func processResponse(body []byte) [][]interface{} {
 		if now.Before(startDate) || now.Equal(startDate) {
 			playingWith := ""
 			hommies := ""
+			starts := ""
+			status := game.Status.GameStatus
 			if game.IsHomeTeam == 1 {
 				playingWith = game.Visitor.Nickname
 				hommies = game.Home.Nickname
@@ -79,8 +81,14 @@ func processResponse(body []byte) [][]interface{} {
 				hommies = game.Visitor.Nickname
 				startTime = game.VisitorStartTime
 			}
-			starts := fmt.Sprintf("%s %s:%s",
-				startDate.Format("Nov 02, 2006"), startTime[0:2], startTime[2:4])
+			if status == "1" {
+				starts = fmt.Sprintf("%s %s:%s",
+					startDate.Format("Nov 02, 2006"), startTime[0:2], startTime[2:4])
+			} else if status == "2" {
+				starts = fmt.Sprintf("Q%s - %s", game.Status.Period, game.Status.Clock)
+			} else {
+				starts = "Final"
+			}
 			teams := fmt.Sprintf("%s vs %s", hommies, playingWith)
 			place := fmt.Sprintf("%s, %s, %s, %s", game.Arena, game.City, game.State, game.Country)
 			output = append(output, []interface{}{starts, teams, place})
