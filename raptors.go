@@ -20,7 +20,7 @@ type Team struct {
 	Division     string `json:"division"`
 	Nickname     string `json:"nickname"`
 	URLName      string `json:"url_name"`
-	Score        int    `json:"score"`
+	Score        string `json:"score"`
 }
 
 // GameRecord game scheduled
