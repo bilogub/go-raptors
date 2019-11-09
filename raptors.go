@@ -23,14 +23,14 @@ type Team struct {
 	Score        string `json:"score"`
 }
 
-// Period, time, game status
+// PeriodTime - period statistics
 type PeriodTime struct {
-	GameStatus  string `json:"game_status"`
-	Period      string `json:"period_value"`
-	Clock       string `json:"game_clock"`
+	GameStatus string `json:"game_status"`
+	Period     string `json:"period_value"`
+	Clock      string `json:"game_clock"`
 }
 
-// GameRecord game scheduled
+// GameRecord - game scheduled
 type GameRecord struct {
 	ID               int        `json:"id"`
 	Date             string     `json:"date"`
@@ -110,7 +110,7 @@ func processResponse(body []byte) [][]interface{} {
 
 func main() {
 	teamSlug := "raptors"
-	year := 2019
+	year := time.Now().Year()
 	url := fmt.Sprintf("http://data.nba.net/json/cms/%d/team/%s/schedule.json", year, teamSlug)
 
 	req, _ := http.NewRequest("GET", url, nil)

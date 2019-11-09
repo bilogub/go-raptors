@@ -1,5 +1,5 @@
 
-Raptors Games schedule for busy developers - 2019
+Raptors Games schedule for busy developers
 -
 [![Go Report Card](https://goreportcard.com/badge/github.com/bilogub/go-raptors)](https://goreportcard.com/report/github.com/bilogub/go-raptors)
 [![CircleCI](https://circleci.com/gh/bilogub/go-raptors.svg?style=svg)](https://circleci.com/gh/bilogub/go-raptors)
