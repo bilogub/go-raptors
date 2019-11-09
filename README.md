@@ -5,6 +5,7 @@ Raptors Games schedule for busy developers
 [![CircleCI](https://circleci.com/gh/bilogub/go-raptors.svg?style=svg)](https://circleci.com/gh/bilogub/go-raptors)
 
 <img src="raptors-lazy-schedule.png" width="800" />
+
 Outputs:
 -
 
