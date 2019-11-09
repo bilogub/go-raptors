@@ -13,7 +13,7 @@ import (
 
 // Team playing
 type Team struct {
-	ID           int    `json:"id"`
+	ID           string `json:"id"`
 	Abbreviation string `json:"abbreviation"`
 	City         string `json:"city"`
 	Conference   string `json:"conference"`
@@ -32,7 +32,7 @@ type PeriodTime struct {
 
 // GameRecord - game scheduled
 type GameRecord struct {
-	ID               int        `json:"id"`
+	ID               string     `json:"id"`
 	Date             string     `json:"date"`
 	Time             string     `json:"time"`
 	Arena            string     `json:"arena"`
@@ -50,7 +50,7 @@ type GameRecord struct {
 	Season           int        `json:"season"`
 	Status           PeriodTime `json:"period_time"`
 	VisitorTeamScore int        `json:"visitor_team_score"`
-	IsHomeTeam       int        `json:"is_home_team"`
+	IsHomeTeam       string     `json:"is_home_team"`
 	Outcome          string     `json:"outcome"`
 }
 
@@ -61,7 +61,13 @@ type Response struct {
 
 func processResponse(body []byte) [][]interface{} {
 	var result map[string]Response
-	json.Unmarshal([]byte(body), &result)
+	error := json.Unmarshal([]byte(body), &result)
+
+	if error != nil {
+		fmt.Fprintf(os.Stderr, "Error occurred while trying to parse the response. Please try again later: %v\n", error)
+		os.Exit(1)
+	}
+
 	var output [][]interface{}
 	for _, game := range result["sports_content"].Game {
 		startDate, _ := time.ParseInLocation("20060102", game.HomeStartDate, time.Local)
@@ -73,7 +79,7 @@ func processResponse(body []byte) [][]interface{} {
 			starts := ""
 			score := ""
 			status := game.Status.GameStatus
-			if game.IsHomeTeam == 1 {
+			if game.IsHomeTeam == "1" {
 				playingWith = game.Visitor.Nickname
 				hommies = game.Home.Nickname
 				startTime = game.HomeStartTime
@@ -91,7 +97,7 @@ func processResponse(body []byte) [][]interface{} {
 				starts = "Final"
 			}
 			if status == "2" || status == "3" {
-				if game.IsHomeTeam == 1 {
+				if game.IsHomeTeam == "1" {
 					score = fmt.Sprintf("%s - %s", game.Home.Score, game.Visitor.Score)
 				} else {
 					score = fmt.Sprintf("%s - %s", game.Visitor.Score, game.Home.Score)
