@@ -33,14 +33,14 @@ func (p Processor) gameStarts(game GameRecord) string {
 
 func (p Processor) formattedStartTime(game GameRecord) string {
 	switch game.Status.GameStatus {
-	case "1":
+	case "1", "3":
 		startTime := p.gameStarts(game)
 		startDate, _ := time.ParseInLocation("20060102", game.HomeStartDate, time.Local)
 		return fmt.Sprintf("%s %s:%s", startDate.Format("Nov 02, 2006"), startTime[0:2], startTime[2:4])
 	case "2":
 		return fmt.Sprintf("Q%s - %s", game.Status.Period, game.Status.Clock)
 	default:
-		return "Final"
+		return ""
 	}
 }
 
@@ -75,20 +75,23 @@ func (p Processor) Call(body []byte) [][]interface{} {
 	}
 
 	var output [][]interface{}
-	for _, game := range result["sports_content"].Game {
+	for i, game := range result["sports_content"].Game {
 		startDate, _ := time.ParseInLocation("20060102", game.HomeStartDate, time.Local)
 
 		now := time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.Local)
-		if now.Before(startDate) || now.Equal(startDate) {
 
-			output = append(output, []interface{}{
-				p.formattedStartTime(game),
-				p.formattedTeams(game),
-				p.formattedScore(game),
-				p.formattedPlace(game),
-			})
-		}
-		if len(output) == 5 {
+		if now.Before(startDate) || now.Equal(startDate) {
+			previousGames := result["sports_content"].Game[i-5 : i+1]
+			nextGames := result["sports_content"].Game[i+1 : i+5]
+			games := append(previousGames, nextGames...)
+			for _, game := range games {
+				output = append(output, []interface{}{
+					p.formattedStartTime(game),
+					p.formattedTeams(game),
+					p.formattedScore(game),
+					p.formattedPlace(game),
+				})
+			}
 			break
 		}
 	}
