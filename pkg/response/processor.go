@@ -65,7 +65,7 @@ func (p Processor) formattedPlace(game GameRecord) string {
 }
 
 // Call returns strctured data from API request response
-func (p Processor) Call(body []byte) [][]interface{} {
+func (p Processor) Call(body []byte, showPrevious bool, recordsNumToShow int) [][]interface{} {
 	var result map[string]Response
 	error := json.Unmarshal([]byte(body), &result)
 
@@ -81,8 +81,19 @@ func (p Processor) Call(body []byte) [][]interface{} {
 		now := time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.Local)
 
 		if now.Before(startDate) || now.Equal(startDate) {
-			previousGames := result["sports_content"].Game[i-5 : i+1]
-			nextGames := result["sports_content"].Game[i+1 : i+5]
+			previousGames := []GameRecord{}
+			if showPrevious {
+				backward := i - recordsNumToShow
+				if backward < 0 {
+					backward = 0
+				}
+				previousGames = result["sports_content"].Game[backward:i]
+			}
+			forward := i + recordsNumToShow
+			if forward > len(result["sports_content"].Game) {
+				forward = len(result["sports_content"].Game)
+			}
+			nextGames := result["sports_content"].Game[i:forward]
 			games := append(previousGames, nextGames...)
 			for _, game := range games {
 				output = append(output, []interface{}{
