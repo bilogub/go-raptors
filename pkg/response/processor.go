@@ -36,7 +36,7 @@ func (p Processor) formattedStartTime(game GameRecord) string {
 	case "1", "3":
 		startTime := p.gameStarts(game)
 		startDate, _ := time.ParseInLocation("20060102", game.HomeStartDate, time.Local)
-		return fmt.Sprintf("%s %s:%s", startDate.Format("Nov 02, 2006"), startTime[0:2], startTime[2:4])
+		return fmt.Sprintf("%s %s:%s", startDate.Format("Jan 02, 2006"), startTime[0:2], startTime[2:4])
 	case "2":
 		return fmt.Sprintf("Q%s - %s", game.Status.Period, game.Status.Clock)
 	default:
