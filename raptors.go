@@ -17,7 +17,7 @@ func main() {
 	teamSlug := flag.String("team", "raptors", "Pick your team. Default is raptors")
 	recordsNumToShow := flag.Int("num", 5, "How many records to show. Default is 5")
 	flag.Parse()
-	year := time.Now().Year()
+	year := 2019 // time.Now().Year() still available on 2019 url only
 	url := fmt.Sprintf("http://data.nba.net/json/cms/%d/team/%s/schedule.json", year, *teamSlug)
 
 	req, _ := http.NewRequest("GET", url, nil)
