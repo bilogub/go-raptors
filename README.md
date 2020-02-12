@@ -31,7 +31,7 @@ Installation:
 -
 
 1. Build it with Golang
-2. Move to /url/local/bin
-3. Launch it in terminal `raptors`
-4. Follow the schedule and watch the games
+2. For ease of use - rename built binary to `raptors` and move to `/usr/local/bin`
+3. Launch it in your terminal with `raptors`
+4. Follow the schedule and enjoy the games!
 
